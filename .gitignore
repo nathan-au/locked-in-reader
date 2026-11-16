@@ -1,0 +1,8 @@
+.build/
+build/
+.swiftpm/
+*.xcodeproj
+.DS_Store
+
+# Sample PDFs are large and may be copyrighted; keep them local only.
+samples/*.pdf
