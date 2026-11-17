@@ -30,7 +30,11 @@ struct SetupView: View {
                             .tint(model.durationMinutes == m ? .accentColor : nil)
                     }
                     Spacer()
-                    Stepper("\(model.durationMinutes) min", value: $model.durationMinutes, in: 1...480)
+                    TextField("Minutes", value: $model.durationMinutes, format: .number)
+                        .textFieldStyle(.roundedBorder)
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 70)
+                    Text("min")
                 }.padding(6)
             }
 
