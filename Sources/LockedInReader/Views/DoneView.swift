@@ -13,10 +13,7 @@ struct DoneView: View {
                 .font(.largeTitle.bold())
             if let s {
                 Text(s.pdfName).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
-                HStack(spacing: 28) {
-                    stat("Time", "\(Int(s.elapsed / 60)) min")
-                    stat("Pages seen", s.totalPages > 0 ? "\(s.pagesVisited) / \(s.totalPages)" : "\(s.pagesVisited)")
-                }.padding(.top, 6)
+                stat("Time", "\(Int(s.elapsed / 60)) min").padding(.top, 6)
             }
             HStack {
                 Button("New session") { model.newSession() }.keyboardShortcut(.defaultAction)

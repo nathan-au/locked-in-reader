@@ -10,7 +10,6 @@ struct ReaderView: View {
                 PDFReaderView(
                     url: session.pdfURL,
                     startPage: model.startPage,
-                    onLoad: { model.documentLoaded(pageCount: $0) },
                     onPageChange: { model.pageChanged(to: $0) })
             }
 

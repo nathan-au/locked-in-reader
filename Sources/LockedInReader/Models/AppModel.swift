@@ -6,8 +6,6 @@ struct SessionSummary {
     var outcome: Outcome
     var pdfName: String
     var elapsed: TimeInterval
-    var pagesVisited: Int
-    var totalPages: Int
 }
 
 /// Single source of truth for the app: which screen we're on, the running
@@ -28,8 +26,6 @@ final class AppModel: ObservableObject {
     @Published private(set) var summary: SessionSummary?
 
     private(set) var session: ActiveSession?
-    private var visitedPages = Set<Int>()
-    private var totalPages = 0
     private var currentPage = 0
     private var ticker: Timer?
 
@@ -75,7 +71,6 @@ final class AppModel: ObservableObject {
     }
 
     private func beginReading() {
-        visitedPages = []
         showUnlockPrompt = false
         summary = nil
         phase = .reading
@@ -109,9 +104,7 @@ final class AppModel: ObservableObject {
         summary = SessionSummary(
             outcome: outcome,
             pdfName: session.pdfURL.lastPathComponent,
-            elapsed: min(Date().timeIntervalSince(session.startDate), session.endDate.timeIntervalSince(session.startDate)),
-            pagesVisited: visitedPages.count,
-            totalPages: totalPages
+            elapsed: min(Date().timeIntervalSince(session.startDate), session.endDate.timeIntervalSince(session.startDate))
         )
         self.session = nil
         showUnlockPrompt = false
@@ -125,13 +118,8 @@ final class AppModel: ObservableObject {
 
     // MARK: Reader callbacks
 
-    func documentLoaded(pageCount: Int) {
-        totalPages = pageCount
-    }
-
     func pageChanged(to index: Int) {
         currentPage = index
-        visitedPages.insert(index)
         if let url = session?.pdfURL { SessionStore.saveLastPage(index, for: url) }
     }
 }

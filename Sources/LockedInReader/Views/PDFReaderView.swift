@@ -6,7 +6,6 @@ import PDFKit
 struct PDFReaderView: NSViewRepresentable {
     let url: URL
     let startPage: Int
-    var onLoad: (Int) -> Void
     var onPageChange: (Int) -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
@@ -21,7 +20,6 @@ struct PDFReaderView: NSViewRepresentable {
 
         if let doc = PDFDocument(url: url) {
             view.document = doc
-            onLoad(doc.pageCount)
             if startPage > 0, startPage < doc.pageCount, let page = doc.page(at: startPage) {
                 view.go(to: page)
             }
