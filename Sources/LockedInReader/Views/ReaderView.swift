@@ -15,20 +15,26 @@ struct ReaderView: View {
             }
 
             VStack(alignment: .trailing, spacing: 2) {
-                Text(format(model.remaining))
+                Text(model.timeUp ? "Time's up" : format(model.remaining))
                     .font(.system(size: 18, weight: .medium, design: .monospaced))
                 if model.totalPages > 0 {
                     Text("\(model.currentPage + 1) / \(model.totalPages)")
                         .font(.system(size: 13, design: .monospaced))
                 }
-                Text("⌃⌥⌘U emergency exit")
-                    .font(.system(size: 9))
+                if model.timeUp {
+                    Button("Finish session") { model.finishSession() }
+                        .buttonStyle(.borderedProminent)
+                        .padding(.top, 4)
+                } else {
+                    Text("⌃⌥⌘U emergency exit")
+                        .font(.system(size: 9))
+                }
             }
             .foregroundStyle(.white.opacity(0.55))
             .padding(.horizontal, 10).padding(.vertical, 6)
             .background(.black.opacity(0.45), in: RoundedRectangle(cornerRadius: 8))
             .padding(14)
-            .allowsHitTesting(false)
+            .allowsHitTesting(model.timeUp)
 
             if model.showUnlockPrompt {
                 UnlockPrompt(model: model)

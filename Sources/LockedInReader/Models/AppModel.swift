@@ -23,6 +23,7 @@ final class AppModel: ObservableObject {
     @Published private(set) var phase: Phase = .setup
     @Published private(set) var remaining: TimeInterval = 0
     @Published var showUnlockPrompt = false
+    @Published private(set) var timeUp = false
     @Published private(set) var summary: SessionSummary?
 
     private(set) var session: ActiveSession?
@@ -73,6 +74,7 @@ final class AppModel: ObservableObject {
 
     private func beginReading() {
         showUnlockPrompt = false
+        timeUp = false
         summary = nil
         phase = .reading
         tick()
@@ -84,7 +86,18 @@ final class AppModel: ObservableObject {
     private func tick() {
         guard let session else { return }
         remaining = max(0, session.endDate.timeIntervalSinceNow)
-        if remaining <= 0 { finish(.completed) }
+        if remaining <= 0 {
+            // Stay locked on the reader until the user presses the finish button.
+            ticker?.invalidate()
+            ticker = nil
+            timeUp = true
+        }
+    }
+
+    /// Called from the "Finish" button once the timer has run out.
+    func finishSession() {
+        guard timeUp else { return }
+        finish(.completed)
     }
 
     /// Checks the emergency passphrase. Returns true and ends the session if it matches.
