@@ -26,7 +26,8 @@ final class AppModel: ObservableObject {
     @Published private(set) var summary: SessionSummary?
 
     private(set) var session: ActiveSession?
-    private var currentPage = 0
+    @Published private(set) var currentPage = 0
+    @Published private(set) var totalPages = 0
     private var ticker: Timer?
 
     static let minPassphraseLength = 12
@@ -117,6 +118,10 @@ final class AppModel: ObservableObject {
     }
 
     // MARK: Reader callbacks
+
+    func documentLoaded(pageCount: Int) {
+        totalPages = pageCount
+    }
 
     func pageChanged(to index: Int) {
         currentPage = index

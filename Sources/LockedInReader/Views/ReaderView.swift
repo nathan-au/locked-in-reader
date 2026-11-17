@@ -10,12 +10,17 @@ struct ReaderView: View {
                 PDFReaderView(
                     url: session.pdfURL,
                     startPage: model.startPage,
+                    onLoad: { model.documentLoaded(pageCount: $0) },
                     onPageChange: { model.pageChanged(to: $0) })
             }
 
             VStack(alignment: .trailing, spacing: 2) {
                 Text(format(model.remaining))
                     .font(.system(size: 18, weight: .medium, design: .monospaced))
+                if model.totalPages > 0 {
+                    Text("\(model.currentPage + 1) / \(model.totalPages)")
+                        .font(.system(size: 13, design: .monospaced))
+                }
                 Text("⌃⌥⌘U emergency exit")
                     .font(.system(size: 9))
             }
