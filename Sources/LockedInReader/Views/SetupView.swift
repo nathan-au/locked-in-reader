@@ -37,8 +37,9 @@ struct SetupView: View {
             GroupBox("Emergency passphrase") {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        SecureField("At least \(AppModel.minPassphraseLength) characters", text: $model.passphrase)
+                        TextField("At least \(AppModel.minPassphraseLength) characters", text: $model.passphrase)
                             .textFieldStyle(.roundedBorder)
+                            .font(.system(.body, design: .monospaced))
                         Button("Generate") { model.passphrase = Self.generatePassphrase() }
                     }
                     Text("Your only early exit (⌃⌥⌘U). Write it down; it can't be recovered.")
