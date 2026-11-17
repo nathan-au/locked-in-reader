@@ -8,8 +8,9 @@ struct SetupView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             Text("Locked In Reader").font(.largeTitle.bold())
-            Text("Pick a PDF and a duration. Once you start, the Mac is locked to the reader until the timer ends.")
+            Text("Your Mac stays locked to this PDF until the timer ends.")
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
 
             GroupBox("PDF") {
                 HStack {
@@ -40,8 +41,9 @@ struct SetupView: View {
                             .textFieldStyle(.roundedBorder)
                         Button("Generate") { model.passphrase = Self.generatePassphrase() }
                     }
-                    Text("The only way out before the timer ends (⌃⌥⌘U). Write it down somewhere you won't look mid-session. It isn't stored in plain text and can't be recovered.")
+                    Text("Your only early exit (⌃⌥⌘U). Write it down; it can't be recovered.")
                         .font(.caption).foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }.padding(6)
             }
 
