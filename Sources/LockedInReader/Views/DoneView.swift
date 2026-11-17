@@ -12,8 +12,10 @@ struct DoneView: View {
             Text(s?.outcome == .completed ? "Session complete" : "Exited early")
                 .font(.largeTitle.bold())
             if let s {
-                Text(s.pdfName).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
-                stat("Time", "\(Int(s.elapsed / 60)) min").padding(.top, 6)
+                VStack(spacing: 12) {
+                    stat("PDF", s.pdfName)
+                    stat("Time", "\(Int(s.elapsed / 60)) min")
+                }.padding(.top, 6)
             }
             HStack {
                 Button("New session") { model.newSession() }.keyboardShortcut(.defaultAction)
@@ -25,6 +27,6 @@ struct DoneView: View {
     }
 
     private func stat(_ label: String, _ value: String) -> some View {
-        VStack { Text(value).font(.title2.bold()); Text(label).font(.caption).foregroundStyle(.secondary) }
+        VStack { Text(value).font(.title2.bold()).lineLimit(1).truncationMode(.middle); Text(label).font(.caption).foregroundStyle(.secondary) }
     }
 }
